@@ -36,6 +36,20 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)shared;
 
 /**
+ 配置wxid
+
+ @param wxid wxid
+ */
+- (void)configWXPayIdWithWXid:(NSString *)wxid;
+
+/**
+ 配置appwScheme
+
+ @param scheme scheme
+ */
+- (void)confingAppScheme:(NSString *)scheme;
+
+/**
  *  发起微信支付请求
  *
  *  @param req    支付参数

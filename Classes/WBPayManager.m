@@ -7,14 +7,15 @@
 //
 
 #import "WBPayManager.h"
-#define WXPayid @"wxcf90f5318e827bfe"
-#define APPSCHEME @"smartbottlecapnew"
 
 @interface WBPayManager ()<WXApiDelegate>
 
 @property (nonatomic, copy) void(^PaySuccess)(PayCode code);
 @property (nonatomic, copy) void(^PayError)(PayCode code , NSString *errorText);
-
+/**微信key */
+@property (nonatomic, copy) NSString *wxid;
+/**scheme */
+@property (nonatomic, copy) NSString *scheme;
 @end
 
 @implementation WBPayManager
@@ -27,6 +28,20 @@ static id _instance;
     });
     
     return _instance;
+}
+
+
+- (void)configWXPayIdWithWXid:(NSString *)wxid{
+    self.wxid = wxid;
+}
+
+/**
+ 配置appwScheme
+ 
+ @param scheme scheme
+ */
+- (void)confingAppScheme:(NSString *)scheme{
+    self.scheme = scheme;
 }
 
 
@@ -85,7 +100,7 @@ static id _instance;
     self.PayError = failBlock;
     
     
-    [WXApi registerApp:WXPayid];
+    [WXApi registerApp:self.wxid];
     
     if(![WXApi isWXAppInstalled]) {
         failBlock(WXERROR_NOTINSTALL,@"未安装微信");
@@ -126,7 +141,7 @@ static id _instance;
 - (void)aliPayWithPayParam:(NSString *)pay_param success:(void (^)(PayCode))successBlock failure:(void (^)(PayCode, NSString * _Nonnull))failBlock{
     self.PaySuccess = successBlock;
     self.PayError = failBlock;
-    NSString * appScheme =  APPSCHEME;
+    NSString * appScheme =  self.scheme;
     [[AlipaySDK defaultService] payOrder:pay_param fromScheme:appScheme callback:^(NSDictionary *resultDic) {
         NSLog(@"----- %@",resultDic);
         NSInteger resultCode = [resultDic[@"resultStatus"] integerValue];
