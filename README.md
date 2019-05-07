@@ -32,6 +32,8 @@ infoplist 中 添加
     } failure:^(PayCode code, NSString * _Nonnull errorText) {
         
     }];
+    
+    
     PayReq* req             = [[PayReq alloc] init];
     req.partnerId           = @"partnerId";
     req.prepayId            = @"prepayid";
