@@ -38,7 +38,7 @@ static id _instance;
         // 支付跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
             //【由于在跳转支付宝客户端支付的过程中，商户app在后台很可能被系统kill了，所以pay接口的callback就会失效，请商户对standbyCallback返回的回调结果进行处理,就是在这个方法里面处理跟callback一样的逻辑】
-            DELog(@"result = %@",resultDic);
+            NSLog(@"result = %@",resultDic);
             
             NSInteger resultCode = [resultDic[@"resultStatus"] integerValue];
             switch (resultCode) {
@@ -58,7 +58,7 @@ static id _instance;
         
         // 授权跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processAuth_V2Result:url standbyCallback:^(NSDictionary *resultDic) {
-            DELog(@"result = %@",resultDic);
+            NSLog(@"result = %@",resultDic);
             // 解析 auth code
             NSString *result = resultDic[@"result"];
             NSString *authCode = nil;
@@ -71,7 +71,7 @@ static id _instance;
                     }
                 }
             }
-            DELog(@"授权结果 authCode = %@", authCode?:@"");
+            NSLog(@"授权结果 authCode = %@", authCode?:@"");
         }];
         return YES;
     } //([url.host isEqualToString:@"pay"]) //微信支付
@@ -128,7 +128,7 @@ static id _instance;
     self.PayError = failBlock;
     NSString * appScheme =  APPSCHEME;
     [[AlipaySDK defaultService] payOrder:pay_param fromScheme:appScheme callback:^(NSDictionary *resultDic) {
-        DELog(@"----- %@",resultDic);
+        NSLog(@"----- %@",resultDic);
         NSInteger resultCode = [resultDic[@"resultStatus"] integerValue];
         switch (resultCode) {
             case 9000:     //支付成功
